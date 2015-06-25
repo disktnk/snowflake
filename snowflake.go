@@ -98,7 +98,7 @@ func (s *state) inc(ctx *core.Context) (int64, int64, error) {
 	}
 }
 
-func snowflake(ctx *core.Context, stateName tuple.Value) (tuple.Value, error) {
+func Snowflake(ctx *core.Context, stateName tuple.Value) (tuple.Value, error) {
 	s, err := lookupState(ctx, stateName)
 	if err != nil {
 		return nil, err
