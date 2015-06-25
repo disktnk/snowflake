@@ -15,7 +15,7 @@ Just import plugin package from an application:
 
 ```
 import (
-    _ "pfi/nobu/snowflake/plugin"
+    _ "pfi/sensorbee/snowflake/plugin"
 )
 ```
 

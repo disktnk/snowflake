@@ -1,9 +1,9 @@
 package plugin
 
 import (
-	"pfi/nobu/snowflake"
 	"pfi/sensorbee/sensorbee/bql"
 	"pfi/sensorbee/sensorbee/bql/udf"
+	"pfi/sensorbee/snowflake"
 )
 
 func init() {
