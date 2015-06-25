@@ -16,6 +16,8 @@ type state struct {
 	m             sync.Mutex
 }
 
+// NewState returns a user defined state for snowflake ID generation.
+// This function can be registered as UDSCreator.
 func NewState(ctx *core.Context, params tuple.Map) (core.SharedState, error) {
 	v, ok := params["machine_id"]
 	if !ok {
@@ -98,6 +100,8 @@ func (s *state) inc(ctx *core.Context) (int64, int64, error) {
 	}
 }
 
+// Snowflake generates a new ID based on snowflake ID generation algorithm.
+// stateName must point to a shared state created by NewState.
 func Snowflake(ctx *core.Context, stateName tuple.Value) (tuple.Value, error) {
 	s, err := lookupState(ctx, stateName)
 	if err != nil {
