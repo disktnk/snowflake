@@ -25,11 +25,11 @@ Or, register the user defined state and UDF manually to bql package.
 
 ```
 -- Create a user defined state for snowflake UDF.
-CREATE STATE event_id_seq TYPE snowflake_id WITH machine_id = 1
+CREATE STATE event_id_seq TYPE snowflake_id WITH machine_id=1
 
 -- Assign IDs to an event sequence. IDs will be generated based on
 -- the state 'event_id_seq'
-CREATE STREAM events_with_id AS SELECT snowflake_id("event_id_seq"), * FROM events;
+CREATE STREAM events_with_id AS SELECT snowflake_id('event_id_seq'), * FROM events;
 ```
 
 # TODO
