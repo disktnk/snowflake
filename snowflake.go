@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"pfi/sensorbee/sensorbee/core"
-	"pfi/sensorbee/sensorbee/tuple"
+	"pfi/sensorbee/sensorbee/data"
 	"sync"
 	"time"
 )
@@ -18,13 +18,13 @@ type state struct {
 
 // NewState returns a user defined state for snowflake ID generation.
 // This function can be registered as UDSCreator.
-func NewState(ctx *core.Context, params tuple.Map) (core.SharedState, error) {
+func NewState(ctx *core.Context, params data.Map) (core.SharedState, error) {
 	v, ok := params["machine_id"]
 	if !ok {
 		return nil, errors.New("machine_id parameter is missing")
 	}
 
-	mid, err := tuple.ToInt(v)
+	mid, err := data.ToInt(v)
 	if err != nil {
 		return nil, fmt.Errorf("machine_id parameter cannot be converted to an integer: %v", err)
 	}
@@ -45,7 +45,7 @@ func (s *state) Init(ctx *core.Context) error {
 	return nil
 }
 
-func (s *state) Write(ctx *core.Context, t *tuple.Tuple) error {
+func (s *state) Write(ctx *core.Context, t *core.Tuple) error {
 	return nil
 }
 
@@ -102,7 +102,7 @@ func (s *state) inc(ctx *core.Context) (int64, int64, error) {
 
 // Snowflake generates a new ID based on snowflake ID generation algorithm.
 // stateName must point to a shared state created by NewState.
-func Snowflake(ctx *core.Context, stateName tuple.Value) (tuple.Value, error) {
+func Snowflake(ctx *core.Context, stateName data.Value) (data.Value, error) {
 	s, err := lookupState(ctx, stateName)
 	if err != nil {
 		return nil, err
@@ -112,11 +112,11 @@ func Snowflake(ctx *core.Context, stateName tuple.Value) (tuple.Value, error) {
 	if err != nil {
 		return nil, err
 	}
-	return tuple.Int(id), nil
+	return data.Int(id), nil
 }
 
-func lookupState(ctx *core.Context, stateName tuple.Value) (*state, error) {
-	name, err := tuple.AsString(stateName)
+func lookupState(ctx *core.Context, stateName data.Value) (*state, error) {
+	name, err := data.AsString(stateName)
 	if err != nil {
 		return nil, fmt.Errorf("name of the state must be a string: %v", stateName)
 	}

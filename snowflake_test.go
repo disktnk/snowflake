@@ -3,7 +3,7 @@ package snowflake
 import (
 	. "github.com/smartystreets/goconvey/convey"
 	"pfi/sensorbee/sensorbee/core"
-	"pfi/sensorbee/sensorbee/tuple"
+	"pfi/sensorbee/sensorbee/data"
 	"testing"
 	"time"
 )
@@ -15,8 +15,8 @@ func TestSnowflake(t *testing.T) {
 	}
 
 	{
-		s, err := NewState(ctx, tuple.Map{
-			"machine_id": tuple.Int(601),
+		s, err := NewState(ctx, data.Map{
+			"machine_id": data.Int(601),
 		})
 		if err != nil {
 			t.Fatal(err)
@@ -30,12 +30,12 @@ func TestSnowflake(t *testing.T) {
 		Convey("when calling the snowflake function within the same millisecond", func() {
 			var (
 				now time.Time
-				v   tuple.Value
+				v   data.Value
 				err error
 			)
 			for {
 				now = time.Now()
-				v, err = snowflake(ctx, tuple.String("test_snowflake"))
+				v, err = Snowflake(ctx, data.String("test_snowflake"))
 				if err != nil {
 					So(err, ShouldBeNil)
 				}
@@ -45,7 +45,7 @@ func TestSnowflake(t *testing.T) {
 			}
 			So(err, ShouldBeNil)
 
-			id, err := tuple.ToInt(v)
+			id, err := data.ToInt(v)
 			So(err, ShouldBeNil)
 
 			Convey("the value sholud contain the current millisecond", func() {
@@ -61,9 +61,9 @@ func TestSnowflake(t *testing.T) {
 			var ids []int64
 			for {
 				now := time.Now()
-				var a []tuple.Value
+				var a []data.Value
 				for i := 0; i < 3; i++ {
-					v, err := snowflake(ctx, tuple.String("test_snowflake"))
+					v, err := Snowflake(ctx, data.String("test_snowflake"))
 					if err != nil {
 						So(err, ShouldBeNil)
 					}
@@ -71,7 +71,7 @@ func TestSnowflake(t *testing.T) {
 				}
 				if time.Now().Sub(now)/time.Millisecond == 0 {
 					for _, v := range a {
-						id, err := tuple.ToInt(v)
+						id, err := data.ToInt(v)
 						So(err, ShouldBeNil)
 						ids = append(ids, id)
 					}
