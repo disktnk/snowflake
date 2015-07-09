@@ -83,8 +83,8 @@ func (s *state) inc(ctx *core.Context) (int64, int64, error) {
 		}
 
 		if now < s.lastTimestamp {
-			ctx.Logger.Log(core.Warning, "[snowflake] The system clock might have been changed during execution. ID generation stops for %v millseconds.",
-				s.lastTimestamp-now)
+			ctx.Log().WithField("udf", "snowflake").
+				Warnf("The system clock might have been changed during execution. ID generation stops for %v millseconds.", s.lastTimestamp-now)
 			return 0, 0, fmt.Errorf("the systen clock may be changed during exection")
 
 		} else if now > s.lastTimestamp {
@@ -121,7 +121,7 @@ func lookupState(ctx *core.Context, stateName data.Value) (*state, error) {
 		return nil, fmt.Errorf("name of the state must be a string: %v", stateName)
 	}
 
-	st, err := ctx.GetSharedState(name)
+	st, err := ctx.SharedStates.Get(name)
 	if err != nil {
 		return nil, err
 	}
