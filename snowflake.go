@@ -37,18 +37,6 @@ func NewState(ctx *core.Context, params data.Map) (core.SharedState, error) {
 	}, nil
 }
 
-func (s *state) TypeName() string {
-	return "snowflake"
-}
-
-func (s *state) Init(ctx *core.Context) error {
-	return nil
-}
-
-func (s *state) Write(ctx *core.Context, t *core.Tuple) error {
-	return nil
-}
-
 func (s *state) Terminate(ctx *core.Context) error {
 	return nil
 }
