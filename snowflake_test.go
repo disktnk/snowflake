@@ -9,10 +9,7 @@ import (
 )
 
 func TestSnowflake(t *testing.T) {
-	ctx := &core.Context{
-		Logger:       core.NewConsolePrintLogger(),
-		SharedStates: core.NewDefaultSharedStateRegistry(),
-	}
+	ctx := core.NewContext(&core.ContextConfig{})
 
 	{
 		s, err := NewState(ctx, data.Map{
@@ -21,7 +18,7 @@ func TestSnowflake(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if err := ctx.SharedStates.Add(ctx, "test_snowflake", s); err != nil {
+		if err := ctx.SharedStates.Add("test_snowflake", s); err != nil {
 			t.Fatal(err)
 		}
 	}
