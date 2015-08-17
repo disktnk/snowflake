@@ -18,7 +18,7 @@ func TestSnowflake(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if err := ctx.SharedStates.Add("test_snowflake", s); err != nil {
+		if err := ctx.SharedStates.Add("test_snowflake", "snowflake_id", s); err != nil {
 			t.Fatal(err)
 		}
 	}
