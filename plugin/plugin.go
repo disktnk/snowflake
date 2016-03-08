@@ -1,8 +1,8 @@
 package plugin
 
 import (
-	"pfi/sensorbee/sensorbee/bql/udf"
-	"pfi/sensorbee/snowflake"
+	"github.com/sensorbee/snowflake"
+	"gopkg.in/sensorbee/sensorbee.v0/bql/udf"
 )
 
 func init() {
