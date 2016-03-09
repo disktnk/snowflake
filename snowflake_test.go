@@ -46,7 +46,9 @@ func TestSnowflake(t *testing.T) {
 			So(err, ShouldBeNil)
 
 			Convey("the value sholud contain the current millisecond", func() {
-				So(id&(((1<<41)-1)<<22), ShouldEqual, (now.UnixNano()/int64(time.Millisecond))<<22)
+				elapse := now.UnixNano()/int64(time.Millisecond) -
+					pluginPublishTime.UnixNano()/int64(time.Millisecond)
+				So(id&(((1<<41)-1)<<22), ShouldEqual, elapse<<22)
 			})
 
 			Convey("the value should contain the machine id", func() {

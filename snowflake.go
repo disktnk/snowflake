@@ -13,6 +13,7 @@ type state struct {
 	machineID     int32
 	seq           int32
 	lastTimestamp int64
+	baseTimestamp int64
 	m             sync.Mutex
 }
 
@@ -33,13 +34,18 @@ func NewState(ctx *core.Context, params data.Map) (core.SharedState, error) {
 	}
 
 	return &state{
-		machineID: int32(mid),
+		machineID:     int32(mid),
+		baseTimestamp: pluginPublishTime.UnixNano() / int64(time.Millisecond),
 	}, nil
 }
 
 func (s *state) Terminate(ctx *core.Context) error {
 	return nil
 }
+
+var (
+	pluginPublishTime = time.Date(2016, 3, 8, 0, 0, 0, 0, time.UTC)
+)
 
 const (
 	timestampShift uint64 = 63 - 41
@@ -82,7 +88,7 @@ func (s *state) inc(ctx *core.Context) (int64, int64, error) {
 
 		s.seq++
 		if s.seq <= seqMax {
-			return s.lastTimestamp, int64(s.seq), nil
+			return s.lastTimestamp - s.baseTimestamp, int64(s.seq), nil
 		}
 		// sequence counter overflow
 	}
